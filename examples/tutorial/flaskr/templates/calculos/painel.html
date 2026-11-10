@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Painel{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <h2>Cálculo de IRPF</h2>
+  <form method="post">
+    <input type="hidden" name="ferramenta" value="irpf">
+    <label for="salario_bruto">Salário bruto (R$)</label>
+    <input name="salario_bruto" id="salario_bruto" type="number"
+           step="0.01" min="0" value="{{ request.form['salario_bruto'] }}" required>
+    <input type="submit" value="Calcular IRPF">
+  </form>
+
+  {% if resultado_irpf %}
+    <p>Base de cálculo: R$ {{ "%.2f"|format(resultado_irpf.base) }}</p>
+    <p>Alíquota da faixa: {{ resultado_irpf.aliquota }}%</p>
+    <p>Imposto pela tabela: R$ {{ "%.2f"|format(resultado_irpf.imposto_tabela) }}</p>
+    <p>Redução (Lei 15.270/2025): R$ {{ "%.2f"|format(resultado_irpf.reducao) }}</p>
+    <p><strong>Desconto estimado: R$ {{ "%.2f"|format(resultado_irpf.desconto) }}</strong></p>
+  {% endif %}
+
+  <hr>
+
+  <h2>Rescisão trabalhista (13º proporcional)</h2>
+  <form method="post">
+    <input type="hidden" name="ferramenta" value="rescisao">
+    <label for="salario_base">Salário base (R$)</label>
+    <input name="salario_base" id="salario_base" type="number"
+           step="0.01" min="0" value="{{ request.form['salario_base'] }}" required>
+
+    <label for="meses">Meses trabalhados (1 a 12)</label>
+    <input name="meses" id="meses" type="number" min="1" max="12"
+           value="{{ request.form['meses'] }}" required>
+
+    <input type="submit" value="Calcular 13º">
+  </form>
+
+  {% if resultado_rescisao %}
+    <p><strong>13º proporcional: R$ {{ "%.2f"|format(resultado_rescisao.decimo_terceiro) }}</strong>
+       ({{ resultado_rescisao.avos }}/12 avos)</p>
+  {% endif %}
+{% endblock %}

@@ -27,10 +27,11 @@ def create_app(test_config=None):
     with app.app_context():
         db.create_all()
 
-    from . import auth, blog
+    from . import auth, blog, calculos
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(blog.bp)
+    app.register_blueprint(calculos.bp)
     app.add_url_rule("/", endpoint="index")
 
     return app
