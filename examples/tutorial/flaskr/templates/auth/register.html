@@ -5,11 +5,13 @@
 {% endblock %}
 
 {% block content %}
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
     <label for="username">Username</label>
     <input name="username" id="username" required>
     <label for="password">Password</label>
     <input type="password" name="password" id="password" required>
+    <label for="photo">Adicione uma foto</label>
+    <input type="file" name="photo" id="photo" accept=".png,.jpg,.jpeg,.gif,.webp">
     <input type="submit" value="Register">
   </form>
 {% endblock %}
